@@ -1,0 +1,35 @@
+[
+  { "id": "gs-001", "question": "Сколько дней ежегодного оплачиваемого отпуска положено работнику?", "lang": "ru", "expected_law": "Трудовой кодекс КР", "expected_law_code": "3-45", "expected_articles": ["68"], "trap": false },
+  { "id": "gs-002", "question": "Какой испытательный срок могут установить при приеме на работу?", "lang": "ru", "expected_law": "Трудовой кодекс КР", "expected_law_code": "3-45", "expected_articles": ["24"], "trap": false },
+  { "id": "gs-003", "question": "Как оплачивается сверхурочная работа?", "lang": "ru", "expected_law": "Трудовой кодекс КР", "expected_law_code": "3-45", "expected_articles": ["108"], "trap": false },
+  { "id": "gs-004", "question": "В какие сроки работодатель обязан выплачивать зарплату?", "lang": "ru", "expected_law": "Трудовой кодекс КР", "expected_law_code": "3-45", "expected_articles": ["94"], "trap": false },
+  { "id": "gs-005", "question": "Сколько длится отпуск по беременности и родам?", "lang": "ru", "expected_law": "Трудовой кодекс КР", "expected_law_code": "3-45", "expected_articles": ["148", "80"], "trap": false },
+  { "id": "gs-006", "question": "Могут ли уволить беременную женщину?", "lang": "ru", "expected_law": "Трудовой кодекс КР", "expected_law_code": "3-45", "expected_articles": ["151"], "trap": false },
+  { "id": "gs-007", "question": "Какую часть зарплаты могут удерживать по закону?", "lang": "ru", "expected_law": "Трудовой кодекс КР", "expected_law_code": "3-45", "expected_articles": ["96"], "trap": false },
+  { "id": "gs-008", "question": "Как расторгнуть брак через суд?", "lang": "ru", "expected_law": "Семейный кодекс КР", "expected_law_code": "3-21", "expected_articles": ["22", "23", "24"], "trap": false },
+  { "id": "gs-009", "question": "Какой размер алиментов на несовершеннолетних детей?", "lang": "ru", "expected_law": "Семейный кодекс КР", "expected_law_code": "3-21", "expected_articles": ["86"], "trap": false },
+  { "id": "gs-010", "question": "Может ли бывшая жена получать алименты после развода?", "lang": "ru", "expected_law": "Семейный кодекс КР", "expected_law_code": "3-21", "expected_articles": ["95"], "trap": false },
+  { "id": "gs-011", "question": "Какая ответственность за несвоевременную уплату алиментов?", "lang": "ru", "expected_law": "Семейный кодекс КР", "expected_law_code": "3-21", "expected_articles": ["120"], "trap": false },
+  { "id": "gs-012", "question": "Какие условия нужны для заключения брака?", "lang": "ru", "expected_law": "Семейный кодекс КР", "expected_law_code": "3-21", "expected_articles": ["13", "15"], "trap": false },
+  { "id": "gs-013", "question": "Что грозит за кражу?", "lang": "ru", "expected_law": "Уголовный кодекс КР", "expected_law_code": "3-38", "expected_articles": ["205"], "trap": false },
+  { "id": "gs-014", "question": "Какое наказание предусмотрено за мошенничество?", "lang": "ru", "expected_law": "Уголовный кодекс КР", "expected_law_code": "3-38", "expected_articles": ["209"], "trap": false },
+  { "id": "gs-015", "question": "Что будет работодателю за невыплату заработной платы?", "lang": "ru", "expected_law": "Уголовный кодекс КР", "expected_law_code": "3-38", "expected_articles": ["203"], "trap": false },
+  { "id": "gs-016", "question": "Что грозит за угон автомобиля?", "lang": "ru", "expected_law": "Уголовный кодекс КР", "expected_law_code": "3-38", "expected_articles": ["211"], "trap": false },
+  { "id": "gs-017", "question": "Какой налоговый вычет положен при покупке жилья?", "lang": "ru", "expected_law": "Налоговый кодекс КР", "expected_law_code": "3-39", "expected_articles": ["196"], "trap": false },
+  { "id": "gs-018", "question": "Есть ли налоговый вычет за оплату обучения?", "lang": "ru", "expected_law": "Налоговый кодекс КР", "expected_law_code": "3-39", "expected_articles": ["195"], "trap": false },
+  { "id": "gs-019", "question": "Как узаконить перепланировку квартиры?", "lang": "ru", "expected_law": "Жилищный кодекс КР", "expected_law_code": "3-42", "expected_articles": ["88", "91"], "trap": false },
+  { "id": "gs-020", "question": "За что могут выселить из занимаемого жилого помещения?", "lang": "ru", "expected_law": "Жилищный кодекс КР", "expected_law_code": "3-42", "expected_articles": ["48"], "trap": false },
+
+  { "id": "gs-021", "question": "Балдарга алимент канча өлчөмдө төлөнөт?", "lang": "ky", "expected_law": "Семейный кодекс КР", "expected_law_code": "3-21", "expected_articles": ["86"], "trap": false },
+  { "id": "gs-022", "question": "Эмгек өргүүсү канча күн болот?", "lang": "ky", "expected_law": "Трудовой кодекс КР", "expected_law_code": "3-45", "expected_articles": ["68"], "trap": false },
+  { "id": "gs-023", "question": "Жумушка кабыл алууда сыноо мөөнөтү канчага чейин болушу мүмкүн?", "lang": "ky", "expected_law": "Трудовой кодекс КР", "expected_law_code": "3-45", "expected_articles": ["24"], "trap": false },
+  { "id": "gs-024", "question": "Уурулук үчүн кандай жаза каралган?", "lang": "ky", "expected_law": "Уголовный кодекс КР", "expected_law_code": "3-38", "expected_articles": ["205"], "trap": false },
+  { "id": "gs-025", "question": "Никени сот аркылуу кантип бузса болот?", "lang": "ky", "expected_law": "Семейный кодекс КР", "expected_law_code": "3-21", "expected_articles": ["22", "23", "24"], "trap": false },
+
+  { "id": "gs-026", "question": "How many days of paid annual leave am I entitled to in Kyrgyzstan?", "lang": "en", "expected_law": "Трудовой кодекс КР", "expected_law_code": "3-45", "expected_articles": ["68"], "trap": false },
+  { "id": "gs-027", "question": "What is the punishment for petty hooliganism?", "lang": "en", "expected_law": "Кодекс о правонарушениях КР", "expected_law_code": "3-36", "expected_articles": ["126"], "trap": false },
+
+  { "id": "gs-028", "question": "Какой штраф за неправильную парковку в Алматы?", "lang": "ru", "expected_law": null, "expected_law_code": null, "expected_articles": [], "trap": true },
+  { "id": "gs-029", "question": "Как оформить туристическую визу в США?", "lang": "ru", "expected_law": null, "expected_law_code": null, "expected_articles": [], "trap": true },
+  { "id": "gs-030", "question": "Какая минимальная пенсия установлена в России?", "lang": "ru", "expected_law": null, "expected_law_code": null, "expected_articles": [], "trap": true }
+]

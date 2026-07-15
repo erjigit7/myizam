@@ -232,7 +232,7 @@ public sealed class AskService
         : c.ArticleNumber is null ? c.SourceUrl
         : $"{c.SourceUrl}#st_{c.ArticleNumber.Replace('-', '_')}";
 
-    internal static (string Ru, string? DetectedLang) ParseBridgeJson(string llmText)
+    public static (string Ru, string? DetectedLang) ParseBridgeJson(string llmText)
     {
         // LLM иногда оборачивает JSON в ```json … ``` — вырезаем содержимое между первой { и последней }
         var start = llmText.IndexOf('{');
@@ -240,10 +240,23 @@ public sealed class AskService
         if (start < 0 || end <= start)
             throw new FormatException($"Мост вернул не-JSON: {llmText[..Math.Min(80, llmText.Length)]}");
         var json = llmText[start..(end + 1)];
-        using var doc = System.Text.Json.JsonDocument.Parse(json);
-        var ru = doc.RootElement.GetProperty("ru").GetString()
-                 ?? throw new FormatException("Мост: поле ru пустое");
-        var detected = doc.RootElement.TryGetProperty("detected_lang", out var d) ? d.GetString() : null;
-        return (ru, detected);
+        try
+        {
+            using var doc = System.Text.Json.JsonDocument.Parse(json);
+            var ru = doc.RootElement.GetProperty("ru").GetString()
+                     ?? throw new FormatException("Мост: поле ru пустое");
+            var detected = doc.RootElement.TryGetProperty("detected_lang", out var d) ? d.GetString() : null;
+            return (ru, detected);
+        }
+        catch (System.Text.Json.JsonException)
+        {
+            // Слабые LLM (qwen на кыргызских вопросах) выдают битый JSON — например,
+            // неэкранированную кавычку в значении. Достаём поле ru регуляркой.
+            var ruMatch = System.Text.RegularExpressions.Regex.Match(json, "\"ru\"\\s*:\\s*\"([^\"\r\n]+)\"");
+            if (!ruMatch.Success)
+                throw new FormatException($"Мост вернул неразбираемый JSON: {json[..Math.Min(120, json.Length)]}");
+            var langMatch = System.Text.RegularExpressions.Regex.Match(json, "\"detected_lang\"\\s*:\\s*\"(\\w+)\"");
+            return (ruMatch.Groups[1].Value, langMatch.Success ? langMatch.Groups[1].Value : null);
+        }
     }
 }

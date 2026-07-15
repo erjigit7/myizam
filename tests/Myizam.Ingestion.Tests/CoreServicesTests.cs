@@ -213,4 +213,14 @@ public class AskServiceTests
         Assert.Equal("Сколько отпуск?", ru);
         Assert.Equal("ky", lang);
     }
+
+    [Fact]
+    public void Bridge_broken_json_falls_back_to_regex()
+    {
+        // реальный кейс qwen на кыргызском вопросе: неэкранированная кавычка ломает JSON
+        var (ru, lang) = AskService.ParseBridgeJson(
+            "{\"ru\": \"Какое наказание за кражу?\" уурулук, \"detected_lang\": \"ky\"}");
+        Assert.Equal("Какое наказание за кражу?", ru);
+        Assert.Equal("ky", lang);
+    }
 }
