@@ -1,0 +1,9 @@
+# Кэш сырого HTML из API cbd.minjust.gov.kg (спецификация §5, п.5)
+data/raw/
+# Производные чанки — восстанавливаются прогоном ingest
+data/chunks/
+
+# .NET
+bin/
+obj/
+*.user

@@ -1,0 +1,9 @@
+[
+  { "documentCode": "3-45", "expectedTitleContains": "Трудовой кодекс" },
+  { "documentCode": "3-21", "expectedTitleContains": "Семейный кодекс" },
+  { "documentCode": "3-1",  "expectedTitleContains": "Гражданский кодекс Кыргызской Республики Часть I" },
+  { "documentCode": "3-2",  "expectedTitleContains": "Часть II" },
+  { "documentCode": "3-38", "expectedTitleContains": "Уголовный кодекс" },
+  { "documentCode": "3-39", "expectedTitleContains": "Налоговый кодекс" },
+  { "documentCode": "3-36", "expectedTitleContains": "о правонарушениях" }
+]
