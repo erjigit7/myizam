@@ -1,0 +1,44 @@
+# Render Blueprint (фаза 6): db + api + ml одним манифестом.
+# Использование: New → Blueprint в дашборде Render, указать этот репозиторий.
+# Секреты (CLIENT_HASH_SALT, OPENAI_API_KEY если будет) задаются в дашборде.
+services:
+  - type: web
+    name: myizam-api
+    runtime: docker
+    dockerfilePath: src/Myizam.Api/Dockerfile
+    plan: starter
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: myizam-db
+          property: connectionString   # ВНИМАНИЕ: Render отдаёт URL-формат; нужен Npgsql-формат — см. docs/deploy.md
+      - key: ML_SIDECAR_URL
+        value: http://myizam-ml:8000
+      - key: GUARD_MODE
+        value: shadow
+      - key: MIN_SIMILARITY
+        value: "0.5"
+      - key: RATE_LIMIT_DAILY
+        value: "5"
+      - key: CLIENT_HASH_SALT
+        sync: false
+      # LLM/эмбеддинги в проде: задать EMBEDDING_PROVIDER/CHAT_BASE_URL/OPENAI_API_KEY
+      # по принятому решению (см. docs/deploy.md, раздел «LLM в проде»)
+
+  - type: web
+    name: myizam-ml
+    runtime: docker
+    rootDir: ml
+    plan: standard        # >=2GB RAM (замеры: ~1.5GB c GUARD_MODELS=kg)
+    envVars:
+      - key: GUARD_MODELS
+        value: kg
+    disk:
+      name: hf-cache
+      mountPath: /hf-cache
+      sizeGB: 5
+
+databases:
+  - name: myizam-db
+    plan: basic-256mb
+    postgresMajorVersion: "16"
