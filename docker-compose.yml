@@ -33,6 +33,15 @@ services:
       timeout: 5s
       retries: 10
 
+  # api: Dockerfile для Myizam.Api добавится в фазе 6 (деплой);
+  # локальная разработка — dotnet run + ng serve с прокси
+
+  web:
+    build: ./frontend/myizam-web
+    ports:
+      - "8080:80"
+    profiles: ["full"]   # docker compose --profile full up — вместе с api
+
 volumes:
   db_data:
   hf_cache:

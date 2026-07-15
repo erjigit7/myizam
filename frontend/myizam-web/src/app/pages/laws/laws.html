@@ -1,0 +1,37 @@
+<section class="laws">
+  <h1>{{ 'laws.title' | translate }}</h1>
+  <p class="note">{{ 'laws.onlyThese' | translate }}</p>
+
+  @if (laws(); as list) {
+    <div class="table-wrap card">
+      <table>
+        <thead>
+          <tr>
+            <th>{{ 'laws.law' | translate }}</th>
+            <th>{{ 'laws.status' | translate }}</th>
+            <th>{{ 'laws.edition' | translate }}</th>
+            <th>{{ 'laws.articles' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (law of list; track law.code) {
+            <tr>
+              <td>
+                @if (law.sourceUrl) {
+                  <a [href]="law.sourceUrl" target="_blank" rel="noopener">{{ law.title }}</a>
+                } @else { {{ law.title }} }
+              </td>
+              <td class="status">{{ law.status }} ✓</td>
+              <td>{{ law.editionDate | date: 'dd.MM.yyyy' }}</td>
+              <td class="num">{{ law.articleCount }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else if (failed()) {
+    <div class="card">{{ 'chat.error' | translate }}</div>
+  } @else {
+    <div class="card">…</div>
+  }
+</section>

@@ -1,0 +1,34 @@
+<section class="about">
+  <h1>{{ 'about.title' | translate }}</h1>
+  <div class="card">
+    <p>{{ 'about.what' | translate }}</p>
+    <h2>{{ 'about.howTitle' | translate }}</h2>
+    <ol class="pipeline">
+      <li>{{ 'about.how1' | translate }}</li>
+      <li>{{ 'about.how2' | translate }}</li>
+      <li>{{ 'about.how3' | translate }}</li>
+      <li>{{ 'about.how4' | translate }}</li>
+    </ol>
+    <div class="diagram" aria-hidden="true">
+      <span class="node">Angular</span><span class="arrow">→</span>
+      <span class="node">.NET API</span><span class="arrow">→</span>
+      <span class="node">pgvector</span><span class="arrow">→</span>
+      <span class="node">rerank</span><span class="arrow">→</span>
+      <span class="node">LLM</span><span class="arrow">→</span>
+      <span class="node guard">guard ✓</span>
+    </div>
+  </div>
+
+  <div class="card warn-card">
+    <h2>{{ 'about.disclaimerTitle' | translate }}</h2>
+    <p>{{ 'about.disclaimerFull' | translate }}</p>
+  </div>
+
+  <div class="card">
+    <h2>{{ 'about.openSource' | translate }}</h2>
+    <p>
+      <a href="https://github.com/erjigit7/myizam" target="_blank" rel="noopener">github.com/erjigit7/myizam</a> ·
+      <a href="https://github.com/erjigit7/ragguard" target="_blank" rel="noopener">ragguard</a> — {{ 'about.ragguardNote' | translate }}
+    </p>
+  </div>
+</section>

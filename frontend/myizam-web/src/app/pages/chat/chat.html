@@ -1,0 +1,120 @@
+<section class="chat">
+  <!-- пустой экран: примеры вопросов -->
+  @if (state() === 'idle' && !response()) {
+    <div class="hero">
+      <h1>{{ 'chat.title' | translate }}</h1>
+      <p class="sub">{{ 'chat.subtitle' | translate }}</p>
+      <div class="suggested">
+        @for (q of suggested(); track q) {
+          <button type="button" class="chip" (click)="useSuggestion(q)">{{ q }}</button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- заданный вопрос -->
+  @if (askedQuestion() && state() !== 'idle') {
+    <div class="bubble question">{{ askedQuestion() }}</div>
+  }
+
+  <!-- скелетон с этапами пайплайна -->
+  @if (state() === 'loading') {
+    <div class="card loading" aria-live="polite">
+      <div class="stages">
+        @for (s of stages; track s; let i = $index) {
+          <div class="stage" [class.on]="i === stageIndex()" [class.done]="i < stageIndex()">
+            <span class="dot"></span>{{ s | translate }}
+          </div>
+        }
+      </div>
+      <div class="skeleton"><span></span><span></span><span></span></div>
+    </div>
+  }
+
+  <!-- ответ -->
+  @if (state() === 'done' && response(); as r) {
+    <div class="card answer" [class.refused]="r.refused">
+      @if (r.guard && !r.guard.grounded) {
+        <div class="guard-warn">⚠ {{ 'chat.guardWarn' | translate }}</div>
+      }
+      <p class="answer-text">
+        @for (part of answerParts(); track $index) {
+          @if (part.marker) {
+            <button type="button" class="marker" [class.open]="openedSource() === part.marker"
+                    (click)="toggleSource(part.marker!)">{{ part.marker }}</button>
+          } @else {
+            {{ part.text }}
+          }
+        }
+      </p>
+
+      @if (openedSource(); as m) {
+        @if (sourceByMarker(m); as src) {
+          <div class="source-panel">
+            <div class="source-head">
+              <strong>{{ src.law }}</strong>
+              @if (src.article) { <span> · {{ 'chat.article' | translate }} {{ src.article }}</span> }
+            </div>
+            @if (src.articleTitle) { <div class="source-title">{{ src.articleTitle }}</div> }
+            <p class="source-excerpt">{{ src.excerpt }}</p>
+            @if (src.url) {
+              <a [href]="src.url" target="_blank" rel="noopener">{{ 'chat.readFull' | translate }} →</a>
+            }
+          </div>
+        }
+      }
+
+      @if (r.sources.length > 0) {
+        <div class="sources-row">
+          <span class="sources-label">{{ 'chat.sources' | translate }}:</span>
+          @for (s of r.sources; track s.marker) {
+            <button type="button" class="marker" [class.open]="openedSource() === s.marker"
+                    (click)="toggleSource(s.marker)">
+              [{{ s.marker }}] {{ s.law }}@if (s.article) {, {{ 'chat.articleShort' | translate }} {{ s.article }}}
+            </button>
+          }
+        </div>
+      }
+
+      <div class="disclaimer">{{ r.disclaimer }}</div>
+    </div>
+  }
+
+  <!-- ошибка -->
+  @if (state() === 'error') {
+    <div class="card error">
+      <p>{{ 'chat.error' | translate }}</p>
+      <button type="button" class="retry" (click)="ask()">{{ 'chat.retry' | translate }}</button>
+    </div>
+  }
+
+  <!-- лимит исчерпан -->
+  @if (state() === 'limited') {
+    <div class="card limited">
+      <p>{{ 'chat.limitReached' | translate }}</p>
+      @if (limitCountdown()) {
+        <p class="countdown">{{ 'chat.limitReset' | translate }}: {{ limitCountdown() }}</p>
+      }
+    </div>
+  }
+
+  <!-- ввод -->
+  <div class="ask-box">
+    <textarea
+      [value]="question()"
+      (input)="question.set($any($event.target).value)"
+      (keydown)="onKeydown($event)"
+      rows="3"
+      [placeholder]="'chat.placeholder' | translate"
+      [disabled]="state() === 'loading' || state() === 'limited'"></textarea>
+    <div class="ask-row">
+      @if (api.remaining() !== null) {
+        <span class="remaining">{{ 'chat.remaining' | translate }}: {{ api.remaining() }}</span>
+      } @else { <span></span> }
+      <button type="button" class="send" (click)="ask()"
+              [disabled]="!question().trim() || state() === 'loading' || state() === 'limited'">
+        {{ 'chat.send' | translate }}
+      </button>
+    </div>
+  </div>
+</section>

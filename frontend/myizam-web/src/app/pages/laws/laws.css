@@ -1,0 +1,12 @@
+.laws h1 { color: var(--primary); font-size: 1.4rem; }
+.note { color: var(--muted); }
+
+.table-wrap { overflow-x: auto; padding: 0; }
+
+table { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); }
+th { background: var(--primary-soft); color: var(--primary); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td a { color: var(--primary); }
+.status { color: #2e7d4f; white-space: nowrap; }
+.num { text-align: right; }

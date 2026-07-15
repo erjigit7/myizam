@@ -1,0 +1,26 @@
+.about { display: flex; flex-direction: column; gap: 0.9rem; max-width: 720px; margin: 0 auto; }
+.about h1 { color: var(--primary); font-size: 1.4rem; margin: 0; }
+.about h2 { font-size: 1.05rem; color: var(--primary); }
+
+.pipeline li { margin-bottom: 0.3rem; }
+
+.diagram {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+  font-size: 0.85rem;
+}
+.node {
+  background: var(--primary-soft);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.25rem 0.6rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+.node.guard { background: var(--warn-bg); border-color: var(--warn-border); color: #7a5b00; }
+.arrow { color: var(--muted); }
+
+.warn-card { background: var(--warn-bg); border-color: var(--warn-border); }

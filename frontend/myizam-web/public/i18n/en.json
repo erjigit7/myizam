@@ -1,0 +1,52 @@
+{
+  "nav": { "chat": "Chat", "laws": "Knowledge Base", "about": "About" },
+  "footer": { "tagline": "Myizam — a reference for Kyrgyz Republic laws. Not legal advice." },
+  "chat": {
+    "title": "Questions about your rights — in plain language",
+    "subtitle": "8 codes of the Kyrgyz Republic, answers with links to law articles",
+    "placeholder": "Ask a question… (Ctrl+Enter to send)",
+    "send": "Ask",
+    "remaining": "Questions left today",
+    "sources": "Sources",
+    "article": "Article",
+    "articleShort": "art.",
+    "readFull": "Read the full article",
+    "guardWarn": "Automatic verification could not confirm this answer against the law texts — check the original source.",
+    "error": "Something went wrong. Please try again.",
+    "retry": "Retry",
+    "limitReached": "Daily question limit reached. Come back tomorrow!",
+    "limitReset": "Resets in",
+    "stage": {
+      "search": "Searching law articles…",
+      "compose": "Composing the answer…",
+      "verify": "Verifying the answer against the laws…"
+    },
+    "suggested": {
+      "q1": "What payments am I entitled to upon dismissal?",
+      "q2": "How much child support is required?",
+      "q3": "How many vacation days am I entitled to?",
+      "q4": "How do I legalize an apartment renovation?"
+    }
+  },
+  "laws": {
+    "title": "Knowledge Base",
+    "onlyThese": "The assistant knows ONLY these documents — current editions from cbd.minjust.gov.kg:",
+    "law": "Law",
+    "status": "Status",
+    "edition": "Edition",
+    "articles": "Articles"
+  },
+  "about": {
+    "title": "About",
+    "what": "Myizam is an open assistant for the legislation of the Kyrgyz Republic. Ask a question in Kyrgyz, Russian, or English — get an answer in plain language with references to specific articles of specific codes.",
+    "howTitle": "How it works",
+    "how1": "Your question is searched across 3,400+ articles of eight KR codes (vector search).",
+    "how2": "Found articles are re-ranked by a neural model; the best go into the context.",
+    "how3": "The language model answers strictly from the retrieved articles, marking sources [1].",
+    "how4": "Each answer is checked by our own hallucination detector (RagGuard) before display.",
+    "disclaimerTitle": "Important",
+    "disclaimerFull": "This is reference information, not legal advice. The assistant can make mistakes; always verify answers against the original source — links to official article texts appear under every answer. For legal matters, consult a lawyer.",
+    "openSource": "Open source",
+    "ragguardNote": "the first hallucination detector for the Kyrgyz language"
+  }
+}

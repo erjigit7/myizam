@@ -1,0 +1,27 @@
+<header class="header">
+  <div class="header-inner">
+    <a routerLink="/" class="logo">
+      <span class="logo-mark">⚖</span>
+      <span class="logo-text">Мыйзам</span>
+    </a>
+    <nav class="nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ 'nav.chat' | translate }}</a>
+      <a routerLink="/laws" routerLinkActive="active">{{ 'nav.laws' | translate }}</a>
+      <a routerLink="/about" routerLinkActive="active">{{ 'nav.about' | translate }}</a>
+    </nav>
+    <div class="lang-switch" role="group" aria-label="Language">
+      @for (l of langs; track l) {
+        <button type="button" [class.on]="lang.current() === l" (click)="lang.set(l)">{{ langLabels[l] }}</button>
+      }
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <router-outlet />
+</main>
+
+<footer class="footer">
+  <span>{{ 'footer.tagline' | translate }}</span>
+  <a href="https://github.com/erjigit7/myizam" target="_blank" rel="noopener">GitHub</a>
+</footer>
