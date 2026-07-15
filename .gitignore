@@ -18,3 +18,4 @@ __pycache__/
 # Angular
 frontend/myizam-web/dist/
 frontend/myizam-web/.angular/
+unsloth_compiled_cache/
