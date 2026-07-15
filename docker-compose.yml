@@ -33,8 +33,35 @@ services:
       timeout: 5s
       retries: 10
 
-  # api: Dockerfile для Myizam.Api добавится в фазе 6 (деплой);
-  # локальная разработка — dotnet run + ng serve с прокси
+  api:
+    build:
+      context: .
+      dockerfile: src/Myizam.Api/Dockerfile
+    ports:
+      - "5080:8080"
+    environment:
+      DATABASE_URL: Host=db;Port=5432;Database=${POSTGRES_DB:-myizam};Username=${POSTGRES_USER:-myizam};Password=${POSTGRES_PASSWORD:-myizam}
+      ML_SIDECAR_URL: http://ml:8000
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-ollama}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-bge-m3}
+      EMBEDDING_DIM: ${EMBEDDING_DIM:-1024}
+      # host.docker.internal — локальный Ollama с хоста; в проде — OpenAI
+      OLLAMA_URL: ${OLLAMA_URL_DOCKER:-http://host.docker.internal:11434}
+      CHAT_BASE_URL: ${CHAT_BASE_URL_DOCKER:-http://host.docker.internal:11434}
+      CHAT_MODEL: ${CHAT_MODEL:-qwen2.5:7b-instruct}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      GUARD_MODE: ${GUARD_MODE:-shadow}
+      MIN_SIMILARITY: ${MIN_SIMILARITY:-0.5}
+      RATE_LIMIT_DAILY: ${RATE_LIMIT_DAILY:-5}
+      RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-3}
+      CLIENT_HASH_SALT: ${CLIENT_HASH_SALT:-change-me}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080}
+    depends_on:
+      db:
+        condition: service_healthy
+      ml:
+        condition: service_healthy
+    profiles: ["full"]
 
   web:
     build: ./frontend/myizam-web

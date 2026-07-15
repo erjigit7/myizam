@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 460" font-family="system-ui, Segoe UI, sans-serif" font-size="14">
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#6b7787"/>
+    </marker>
+  </defs>
+  <style>
+    .box { fill:#ffffff; stroke:#1e3a5f; stroke-width:1.6; rx:10; }
+    .soft { fill:#eaf0f7; }
+    .warn { fill:#fff7e0; stroke:#c8912a; }
+    .t { fill:#1d2733; }
+    .h { font-weight:700; fill:#1e3a5f; }
+    .s { font-size:11.5px; fill:#6b7787; }
+    .edge { stroke:#6b7787; stroke-width:1.4; fill:none; marker-end:url(#a); }
+    .el { font-size:11px; fill:#6b7787; }
+  </style>
+
+  <!-- Angular -->
+  <rect class="box" x="330" y="16" width="200" height="58" rx="10"/>
+  <text class="h" x="430" y="40" text-anchor="middle">Angular SPA</text>
+  <text class="s" x="430" y="58" text-anchor="middle">KG / RU / EN · mobile-first</text>
+
+  <!-- API -->
+  <rect class="box soft" x="290" y="130" width="280" height="76" rx="10"/>
+  <text class="h" x="430" y="155" text-anchor="middle">ASP.NET Core 8 Web API</text>
+  <text class="s" x="430" y="174" text-anchor="middle">оркестрация · языковой роутинг · rate-limit</text>
+  <text class="s" x="430" y="191" text-anchor="middle">кэш ответов · query_log</text>
+
+  <!-- Postgres -->
+  <rect class="box" x="40" y="290" width="220" height="94" rx="10"/>
+  <text class="h" x="150" y="315" text-anchor="middle">PostgreSQL 16 + pgvector</text>
+  <text class="s" x="150" y="334" text-anchor="middle">8 кодексов · 3444 чанка · векторы</text>
+  <text class="s" x="150" y="351" text-anchor="middle">embedding_cache · answer_cache</text>
+  <text class="s" x="150" y="368" text-anchor="middle">query_log</text>
+
+  <!-- LLM -->
+  <rect class="box" x="330" y="290" width="200" height="94" rx="10"/>
+  <text class="h" x="430" y="315" text-anchor="middle">LLM API</text>
+  <text class="s" x="430" y="334" text-anchor="middle">gpt-4o-mini (prod)</text>
+  <text class="s" x="430" y="351" text-anchor="middle">Ollama qwen2.5 (dev)</text>
+  <text class="s" x="430" y="368" text-anchor="middle">мост · генерация · перевод</text>
+
+  <!-- Sidecar -->
+  <rect class="box warn" x="600" y="290" width="220" height="94" rx="10"/>
+  <text class="h" x="710" y="315" text-anchor="middle">ML-sidecar (FastAPI)</text>
+  <text class="s" x="710" y="334" text-anchor="middle">/rerank — mmarco-MiniLM</text>
+  <text class="s" x="710" y="351" text-anchor="middle">/guard/check — RagGuard</text>
+  <text class="s" x="710" y="368" text-anchor="middle">KG/RU: XLM-R · EN: ModernBERT</text>
+
+  <!-- Ingestion -->
+  <rect class="box" x="40" y="130" width="180" height="76" rx="10"/>
+  <text class="h" x="130" y="155" text-anchor="middle">Ingestion (C#)</text>
+  <text class="s" x="130" y="174" text-anchor="middle">cbd.minjust.gov.kg →</text>
+  <text class="s" x="130" y="191" text-anchor="middle">парсер → чанки → векторы</text>
+
+  <!-- edges -->
+  <path class="edge" d="M430,74 L430,128"/>
+  <text class="el" x="440" y="102">HTTPS/JSON</text>
+
+  <path class="edge" d="M340,206 L175,288"/>
+  <text class="el" x="205" y="245">pgvector top-20</text>
+
+  <path class="edge" d="M430,206 L430,288"/>
+  <text class="el" x="440" y="245">шаги 2·6·8</text>
+
+  <path class="edge" d="M540,206 L690,288"/>
+  <text class="el" x="600" y="245">rerank · guard</text>
+
+  <path class="edge" d="M130,206 L138,288"/>
+  <text class="el" x="60" y="245">ingest/embed</text>
+</svg>
