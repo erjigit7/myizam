@@ -10,6 +10,8 @@ Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 var codes = new List<string>();
 bool dryRun = false, fromCache = false, embedMode = false;
+string? searchQuery = null;
+var topK = 20;
 var lang = "ru";
 
 for (var i = 0; i < args.Length; i++)
@@ -18,6 +20,14 @@ for (var i = 0; i < args.Length; i++)
     {
         case "ingest": break;
         case "embed": embedMode = true; break;
+        case "search":
+            if (i + 1 >= args.Length) { Console.Error.WriteLine("search требует вопрос в кавычках"); return 2; }
+            searchQuery = args[++i];
+            break;
+        case "--top":
+            if (i + 1 >= args.Length || !int.TryParse(args[i + 1], out topK)) { Console.Error.WriteLine("--top требует число"); return 2; }
+            i++;
+            break;
         case "--dry-run": dryRun = true; break;
         case "--from-cache": fromCache = true; break;
         case "--lang":
@@ -44,6 +54,8 @@ if (repoRoot is null)
 
 if (embedMode)
     return await EmbedCommand.RunAsync(repoRoot, lang);
+if (searchQuery is not null)
+    return await SearchCommand.RunAsync(searchQuery, topK, lang);
 
 var configPath = Path.Combine(repoRoot, "config", "laws.json");
 var allLaws = JsonSerializer.Deserialize<List<LawConfigEntry>>(
