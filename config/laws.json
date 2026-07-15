@@ -5,5 +5,6 @@
   { "documentCode": "3-2",  "expectedTitleContains": "Часть II" },
   { "documentCode": "3-38", "expectedTitleContains": "Уголовный кодекс" },
   { "documentCode": "3-39", "expectedTitleContains": "Налоговый кодекс" },
-  { "documentCode": "3-36", "expectedTitleContains": "о правонарушениях" }
+  { "documentCode": "3-36", "expectedTitleContains": "о правонарушениях" },
+  { "documentCode": "3-42", "expectedTitleContains": "Жилищный кодекс" }
 ]

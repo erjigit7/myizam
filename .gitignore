@@ -3,7 +3,14 @@ data/raw/
 # Производные чанки — восстанавливаются прогоном ingest
 data/chunks/
 
+# Секреты
+.env
+
 # .NET
 bin/
 obj/
 *.user
+
+# Node / Python
+node_modules/
+__pycache__/
