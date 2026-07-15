@@ -15,7 +15,24 @@ services:
       timeout: 3s
       retries: 10
 
-  # ml: фаза 2 ТЗ v2.1 — FastAPI sidecar (rerank + guard); добавится сервисом сюда
+  ml:
+    build: ./ml
+    ports:
+      - "8000:8000"
+    environment:
+      GUARD_MODELS: ${GUARD_MODELS:-kg}
+      GUARD_MODEL_PATH_KG: /models/ragguard-kyrgyz-v1
+      GUARD_MODEL_PATH_EN: /models/ragguard-v1
+    volumes:
+      - hf_cache:/hf-cache
+      # Веса RagGuard: путь к локальной папке моделей задаётся в .env (RAGGUARD_MODELS_DIR)
+      - ${RAGGUARD_MODELS_DIR:-./ml/models}:/models:ro
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
 volumes:
   db_data:
+  hf_cache:

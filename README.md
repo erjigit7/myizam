@@ -38,6 +38,15 @@ dotnet run --project src/Myizam.Ingestion -- embed   # jsonl → Postgres → в
 
 Кыргызская версия: маркеры структуры зафиксированы на реальном ТК (`--lang kg`, 265 статей 1:1 с русской) — [docs/kg_notes.md](docs/kg_notes.md); полноценный kg-корпус — фаза 2.
 
+## ML-sidecar (ml/)
+
+FastAPI-сервис: `POST /rerank` (кросс-энкодер mmarco-mMiniLMv2-L12-H384-v1, до 20 кандидатов → top-5) и `POST /guard/check` (groundedness-детектор из [ragguard](https://github.com/erjigit7/ragguard): кыргызский/русский — XLM-R, английский — ModernBERT). `/health` мгновенный, модели грузятся лениво.
+
+```bash
+cd ml && .venv/Scripts/python -m pytest -m "not slow"   # быстрые тесты (модели замоканы)
+docker compose up -d ml                                  # веса RagGuard: RAGGUARD_MODELS_DIR в .env
+```
+
 ## Структура
 
 - `src/Myizam.Ingestion` — консольный пайплайн (`MinjustApiClient` → `MinjustHtmlParser` → `LawValidator` → `Chunker`)
