@@ -14,16 +14,16 @@ namespace Myizam.Api.Controllers;
 public sealed class EvalController : ControllerBase
 {
     private readonly LanguageService _language;
-    private readonly IChatProvider _chat;
+    private readonly ITranslator _translator;
     private readonly IQuestionEmbedder _embedder;
     private readonly IChunkSearcher _searcher;
     private readonly IRerankerClient _reranker;
 
-    public EvalController(LanguageService language, IChatProvider chat, IQuestionEmbedder embedder,
+    public EvalController(LanguageService language, ITranslator translator, IQuestionEmbedder embedder,
         IChunkSearcher searcher, IRerankerClient reranker)
     {
         _language = language;
-        _chat = chat;
+        _translator = translator;
         _embedder = embedder;
         _searcher = searcher;
         _reranker = reranker;
@@ -41,10 +41,7 @@ public sealed class EvalController : ControllerBase
         var lang = _language.Detect(req.Question);
         var questionRu = req.Question;
         if (lang != "ru")
-        {
-            var bridge = await _chat.CompleteAsync(PromptBuilder.BridgeSystemPrompt, req.Question, 0, 300, ct);
-            questionRu = AskService.ParseBridgeJson(bridge.Text).Ru;
-        }
+            questionRu = (await _translator.ToRussianAsync(req.Question, lang, ct)).Ru;
 
         var embedding = await _embedder.EmbedQuestionAsync(questionRu, ct);
         var top20 = await _searcher.SearchAsync(embedding, 20, ct);

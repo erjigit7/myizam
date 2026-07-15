@@ -20,6 +20,22 @@ public interface IChatProvider
         double temperature, int maxTokens, CancellationToken ct = default);
 }
 
+/// <summary>
+/// Перевод в пайплайне /api/ask: вопрос → русский (шаг 2) и ответ → язык вопроса (шаг 8).
+/// Реализации: LLM-мост по промптам §10 (по умолчанию) или дообученный
+/// KyrgyzLLM-переводчик (kazllm-legal-translate) для кыргызского направления.
+/// </summary>
+public interface ITranslator
+{
+    /// <summary>DetectedLang — если реализация умеет определять язык (LLM-мост); null = оставить эвристику.</summary>
+    Task<(string Ru, string? DetectedLang, ChatUsage Usage)> ToRussianAsync(
+        string question, string heuristicLang, CancellationToken ct = default);
+
+    /// <summary>Маркеры [N] обязаны сохраниться.</summary>
+    Task<(string Text, ChatUsage Usage)> FromRussianAsync(
+        string answerRu, string targetLang, CancellationToken ct = default);
+}
+
 public interface IRerankerClient
 {
     /// <summary>POST /rerank sidecar-а; null = sidecar недоступен (деградация — top-K по cosine, §7 шаг 5).</summary>

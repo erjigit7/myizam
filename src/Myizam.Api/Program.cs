@@ -62,6 +62,22 @@ builder.Services.AddHttpClient<IChatProvider, OpenAiCompatChatProvider>(c =>
     c.Timeout = TimeSpan.FromSeconds(int.Parse(Env("CHAT_TIMEOUT_SECONDS", "60")));   // локальный qwen медленнее gpt-4o-mini
 });
 
+// Переводчик (шаги 2 и 8): по умолчанию LLM-мост §10; TRANSLATOR=kyrgyzllm —
+// дообученный kazllm-legal-translate для ky-направления (en остаётся на мосте)
+if (Env("TRANSLATOR", "llm") == "kyrgyzllm")
+{
+    builder.Services.AddHttpClient<ITranslator, KyrgyzLlmTranslator>((sp, c) =>
+    {
+        c.BaseAddress = new Uri(Env("TRANSLATE_BASE_URL", Env("OLLAMA_URL", "http://localhost:11434")));
+        c.Timeout = TimeSpan.FromSeconds(int.Parse(Env("CHAT_TIMEOUT_SECONDS", "60")));
+    }).AddTypedClient<ITranslator>((http, sp) =>
+        new KyrgyzLlmTranslator(http, new LlmBridgeTranslator(sp.GetRequiredService<IChatProvider>())));
+}
+else
+{
+    builder.Services.AddScoped<ITranslator>(sp => new LlmBridgeTranslator(sp.GetRequiredService<IChatProvider>()));
+}
+
 // --- Rate limit (§12): 5/сутки + 3/мин по client_hash ---
 var salt = Env("CLIENT_HASH_SALT", "dev-salt");
 string ClientHash(HttpContext ctx)

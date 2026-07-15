@@ -123,6 +123,17 @@ public class AskServiceTests
             Task.FromResult(new ChatResult("Отпуск составляет 28 дней [1]. А также [9].", new ChatUsage(100, 50)));
     }
 
+    private sealed class StubTranslator : ITranslator
+    {
+        public Task<(string Ru, string? DetectedLang, ChatUsage Usage)> ToRussianAsync(
+            string q, string heuristicLang, CancellationToken ct = default) =>
+            Task.FromResult((q, (string?)null, new ChatUsage(10, 10)));
+
+        public Task<(string Text, ChatUsage Usage)> FromRussianAsync(
+            string answerRu, string targetLang, CancellationToken ct = default) =>
+            Task.FromResult((answerRu, new ChatUsage(10, 10)));
+    }
+
     private sealed class NoCache : IAnswerCache
     {
         public Task<AskResponse?> GetAsync(string k, CancellationToken ct = default) => Task.FromResult<AskResponse?>(null);
@@ -141,7 +152,7 @@ public class AskServiceTests
 
     private static AskService Build(double similarity, bool rerankerUp, ListLogger log, double minSimilarity = 0.35) =>
         new(new LanguageService(), new PromptBuilder(), new StubEmbedder(), new StubSearcher(similarity),
-            new StubReranker(rerankerUp), new StubGuard(), new StubChat(), new NoCache(), log,
+            new StubReranker(rerankerUp), new StubGuard(), new StubChat(), new StubTranslator(), new NoCache(), log,
             new AskOptions { MinSimilarity = minSimilarity });
 
     [Fact]

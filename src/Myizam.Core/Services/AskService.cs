@@ -44,13 +44,14 @@ public sealed class AskService
     private readonly IRerankerClient _reranker;
     private readonly IGuardClient _guard;
     private readonly IChatProvider _chat;
+    private readonly ITranslator _translator;
     private readonly IAnswerCache _cache;
     private readonly IQueryLogger _log;
     private readonly AskOptions _opts;
 
     public AskService(LanguageService language, PromptBuilder prompts, IQuestionEmbedder embedder,
         IChunkSearcher searcher, IRerankerClient reranker, IGuardClient guard,
-        IChatProvider chat, IAnswerCache cache, IQueryLogger log, AskOptions opts)
+        IChatProvider chat, ITranslator translator, IAnswerCache cache, IQueryLogger log, AskOptions opts)
     {
         _language = language;
         _prompts = prompts;
@@ -59,6 +60,7 @@ public sealed class AskService
         _reranker = reranker;
         _guard = guard;
         _chat = chat;
+        _translator = translator;
         _cache = cache;
         _log = log;
         _opts = opts;
@@ -78,14 +80,12 @@ public sealed class AskService
         {
             try
             {
-                var bridge = await _chat.CompleteAsync(PromptBuilder.BridgeSystemPrompt, question,
-                    temperature: 0, maxTokens: 300, ct);
-                tokensIn += bridge.Usage.TokensIn;
-                tokensOut += bridge.Usage.TokensOut;
-                var parsed = ParseBridgeJson(bridge.Text);
-                questionRu = parsed.Ru;
-                if (parsed.DetectedLang is "ky" or "ru" or "en" && parsed.DetectedLang != lang)
-                    lang = parsed.DetectedLang;   // расхождение: приоритет у LLM (§7 шаг 1)
+                var (ru, detectedLang, usage) = await _translator.ToRussianAsync(question, lang, ct);
+                tokensIn += usage.TokensIn;
+                tokensOut += usage.TokensOut;
+                questionRu = ru;
+                if (detectedLang is "ky" or "ru" or "en" && detectedLang != lang)
+                    lang = detectedLang;   // расхождение: приоритет у LLM (§7 шаг 1)
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
             {
@@ -156,12 +156,10 @@ public sealed class AskService
         var answer = answerRu;
         if (lang != "ru")
         {
-            var target = lang == "ky" ? "кыргызский" : "английский";
-            var tr = await _chat.CompleteAsync(PromptBuilder.TranslateAnswerSystemPrompt(target), answerRu,
-                temperature: 0, maxTokens: _opts.MaxAnswerTokens + 200, ct);
-            tokensIn += tr.Usage.TokensIn;
-            tokensOut += tr.Usage.TokensOut;
-            answer = tr.Text;
+            var (translated, trUsage) = await _translator.FromRussianAsync(answerRu, lang, ct);
+            tokensIn += trUsage.TokensIn;
+            tokensOut += trUsage.TokensOut;
+            answer = translated;
         }
 
         // Шаг 9: сборка — источники по реально использованным маркерам
