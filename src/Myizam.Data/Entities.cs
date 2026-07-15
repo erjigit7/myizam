@@ -17,6 +17,7 @@ public sealed class LawEntity
     public DateOnly EditionDate { get; set; }
     public long EditionId { get; set; }
     public int ArticleCount { get; set; }
+    public string? SourceUrl { get; set; }              // https://cbd.minjust.gov.kg/{code}/edition/{editionId}/ru
     public DateTimeOffset IngestedAt { get; set; }
 
     public List<ChunkEntity> Chunks { get; set; } = new();
@@ -33,6 +34,10 @@ public sealed class ChunkEntity
     public required string Text { get; set; }
     public required string ContentHash { get; set; }    // sha256(header+text) — идемпотентность эмбеддингов
     public string Lang { get; set; } = "ru";
+    // Метаданные для панели источников (§5/§9)
+    public string? ArticleTitle { get; set; }
+    public string? Chapter { get; set; }
+    public string? Section { get; set; }
     public Vector? Embedding { get; set; }              // null до прогона embed
     public DateTimeOffset CreatedAt { get; set; }
 
@@ -49,25 +54,35 @@ public sealed class EmbeddingCacheEntity
     public DateTimeOffset CreatedAt { get; set; }
 }
 
-/// <summary>Лог запросов /api/ask (§5) — поля по шагам пайплайна §7; cost_usd обязателен.</summary>
+/// <summary>Лог запросов /api/ask — точная схема ТЗ v2.0 §5 (+ cache_hit/error сверх спеки).</summary>
 public sealed class QueryLogEntity
 {
     public long Id { get; set; }
-    public DateTimeOffset Ts { get; set; }
-    public required string ClientHash { get; set; }     // sha256(IP+соль)
-    public string? LangDetected { get; set; }           // ru|ky|en
     public required string Question { get; set; }
-    public string? QuestionRu { get; set; }             // после моста на русский
+    public required string QuestionLang { get; set; }   // 'ky' | 'ru' | 'en'
+    public string? QuestionRu { get; set; }             // после перевода-моста (= question если ru)
     public string? Answer { get; set; }
-    public string? SourcesJson { get; set; }            // [{law, article, similarity}] — jsonb
-    public double? TopSimilarity { get; set; }
+    public string? AnswerLang { get; set; }
+    public long[]? CitedChunkIds { get; set; }
+    public double? TopSimilarity { get; set; }          // max cosine similarity до reranker
     public double? GuardScore { get; set; }
-    public string? GuardMode { get; set; }              // shadow|warn|block
+    public bool? GuardGrounded { get; set; }
+    public string? GuardModel { get; set; }             // 'en' | 'kg' | 'skipped'
+    public bool Refused { get; set; }                   // система ответила «не знаю»
+    public int LatencyMs { get; set; }
     public int TokensIn { get; set; }
     public int TokensOut { get; set; }
     public decimal CostUsd { get; set; }
-    public int LatencyMs { get; set; }
+    public required string ClientHash { get; set; }     // sha256(IP + соль), сырой IP не хранится
     public bool CacheHit { get; set; }
-    public bool Refused { get; set; }                   // отказ по порогу похожести
     public string? Error { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+}
+
+/// <summary>Кэш готовых ответов (§12): sha256(нормализованный question_ru) → ответ, TTL 7 дней.</summary>
+public sealed class AnswerCacheEntity
+{
+    public required string Key { get; set; }            // sha256(lower(trim(question_ru)))
+    public required string AnswerJson { get; set; }     // сериализованный AskResponse (русская версия)
+    public DateTimeOffset CreatedAt { get; set; }
 }

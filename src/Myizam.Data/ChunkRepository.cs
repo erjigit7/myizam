@@ -8,8 +8,10 @@ public sealed record ChunkSearchHit(
     string LawCode,
     string LawTitle,
     string? ArticleNumber,
+    string? ArticleTitle,
     string Header,
     string Text,
+    string? SourceUrl,
     double Similarity);
 
 public sealed class ChunkRepository
@@ -32,8 +34,10 @@ public sealed class ChunkRepository
                        c.law_code AS "LawCode",
                        l.title AS "LawTitle",
                        c.article_number AS "ArticleNumber",
+                       c.article_title AS "ArticleTitle",
                        c.header AS "Header",
                        c.text AS "Text",
+                       l.source_url AS "SourceUrl",
                        1 - (c.embedding <=> {q}) AS "Similarity"
                 FROM chunks c
                 JOIN laws l ON l.document_code = c.law_code
@@ -62,14 +66,26 @@ public sealed class ChunkRepository
             existing.EditionDate = law.EditionDate;
             existing.EditionId = law.EditionId;
             existing.ArticleCount = law.ArticleCount;
+            existing.SourceUrl = law.SourceUrl;
             existing.IngestedAt = law.IngestedAt;
         }
 
         var hashes = chunks.Select(c => c.ContentHash).ToList();
-        var known = (await _db.Chunks
+        var knownEntities = await _db.Chunks
             .Where(c => hashes.Contains(c.ContentHash))
-            .Select(c => c.ContentHash)
-            .ToListAsync(ct)).ToHashSet();
+            .ToListAsync(ct);
+        var known = knownEntities.Select(c => c.ContentHash).ToHashSet();
+
+        // Метаданные (article_title/chapter/section) могли добавиться позже —
+        // обновляем их и у неизменённых чанков, embedding при этом сохраняется
+        var byHash = chunks.ToDictionary(c => c.ContentHash);
+        foreach (var e in knownEntities)
+        {
+            var src = byHash[e.ContentHash];
+            e.ArticleTitle = src.ArticleTitle;
+            e.Chapter = src.Chapter;
+            e.Section = src.Section;
+        }
 
         // Новая редакция: чанки, которых больше нет (изменённые статьи), удаляем —
         // вместе с устаревшими векторами; неизменённые сохраняют embedding

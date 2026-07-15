@@ -17,6 +17,7 @@ public sealed class MyizamDbContext : DbContext
     public DbSet<ChunkEntity> Chunks => Set<ChunkEntity>();
     public DbSet<EmbeddingCacheEntity> EmbeddingCache => Set<EmbeddingCacheEntity>();
     public DbSet<QueryLogEntity> QueryLog => Set<QueryLogEntity>();
+    public DbSet<AnswerCacheEntity> AnswerCache => Set<AnswerCacheEntity>();
 
     public MyizamDbContext(DbContextOptions<MyizamDbContext> options) : base(options) { }
 
@@ -36,6 +37,7 @@ public sealed class MyizamDbContext : DbContext
             e.Property(x => x.EditionDate).HasColumnName("edition_date");
             e.Property(x => x.EditionId).HasColumnName("edition_id");
             e.Property(x => x.ArticleCount).HasColumnName("article_count");
+            e.Property(x => x.SourceUrl).HasColumnName("source_url");
             e.Property(x => x.IngestedAt).HasColumnName("ingested_at");
         });
 
@@ -52,6 +54,9 @@ public sealed class MyizamDbContext : DbContext
             e.Property(x => x.Text).HasColumnName("text");
             e.Property(x => x.ContentHash).HasColumnName("content_hash");
             e.Property(x => x.Lang).HasColumnName("lang").HasDefaultValue("ru");
+            e.Property(x => x.ArticleTitle).HasColumnName("article_title");
+            e.Property(x => x.Chapter).HasColumnName("chapter");
+            e.Property(x => x.Section).HasColumnName("section");
             e.Property(x => x.Embedding).HasColumnName("embedding").HasColumnType($"vector({EmbeddingDim})");
             e.Property(x => x.CreatedAt).HasColumnName("created_at");
             e.HasIndex(x => x.ContentHash).IsUnique();
@@ -75,25 +80,36 @@ public sealed class MyizamDbContext : DbContext
             e.ToTable("query_log");
             e.HasKey(x => x.Id);
             e.Property(x => x.Id).HasColumnName("id");
-            e.Property(x => x.Ts).HasColumnName("ts");
-            e.Property(x => x.ClientHash).HasColumnName("client_hash");
-            e.Property(x => x.LangDetected).HasColumnName("lang_detected");
             e.Property(x => x.Question).HasColumnName("question");
+            e.Property(x => x.QuestionLang).HasColumnName("question_lang");
             e.Property(x => x.QuestionRu).HasColumnName("question_ru");
             e.Property(x => x.Answer).HasColumnName("answer");
-            e.Property(x => x.SourcesJson).HasColumnName("sources").HasColumnType("jsonb");
+            e.Property(x => x.AnswerLang).HasColumnName("answer_lang");
+            e.Property(x => x.CitedChunkIds).HasColumnName("cited_chunk_ids");
             e.Property(x => x.TopSimilarity).HasColumnName("top_similarity");
             e.Property(x => x.GuardScore).HasColumnName("guard_score");
-            e.Property(x => x.GuardMode).HasColumnName("guard_mode");
+            e.Property(x => x.GuardGrounded).HasColumnName("guard_grounded");
+            e.Property(x => x.GuardModel).HasColumnName("guard_model");
+            e.Property(x => x.Refused).HasColumnName("refused");
+            e.Property(x => x.LatencyMs).HasColumnName("latency_ms");
             e.Property(x => x.TokensIn).HasColumnName("tokens_in");
             e.Property(x => x.TokensOut).HasColumnName("tokens_out");
-            e.Property(x => x.CostUsd).HasColumnName("cost_usd").HasColumnType("numeric(10,6)");
-            e.Property(x => x.LatencyMs).HasColumnName("latency_ms");
+            e.Property(x => x.CostUsd).HasColumnName("cost_usd").HasColumnType("numeric(8,5)");
+            e.Property(x => x.ClientHash).HasColumnName("client_hash");
             e.Property(x => x.CacheHit).HasColumnName("cache_hit");
-            e.Property(x => x.Refused).HasColumnName("refused");
             e.Property(x => x.Error).HasColumnName("error");
-            e.HasIndex(x => x.Ts);
-            e.HasIndex(x => x.ClientHash);
+            e.Property(x => x.CreatedAt).HasColumnName("created_at");
+            e.HasIndex(x => x.CreatedAt);
+            e.HasIndex(x => new { x.ClientHash, x.CreatedAt });
+        });
+
+        mb.Entity<AnswerCacheEntity>(e =>
+        {
+            e.ToTable("answer_cache");
+            e.HasKey(x => x.Key);
+            e.Property(x => x.Key).HasColumnName("key");
+            e.Property(x => x.AnswerJson).HasColumnName("answer_json").HasColumnType("jsonb");
+            e.Property(x => x.CreatedAt).HasColumnName("created_at");
         });
     }
 }

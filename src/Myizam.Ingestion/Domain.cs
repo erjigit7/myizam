@@ -68,4 +68,8 @@ public sealed record Chunk(
     int PartCount,
     string Header,           // контекстный заголовок чанка
     string Text,
-    string ContentHash);
+    string ContentHash,
+    // Метаданные для панели источников (ТЗ v2.0 §5/§9): раздельно от header
+    string? ArticleTitle = null,
+    string? Chapter = null,
+    string? Section = null);

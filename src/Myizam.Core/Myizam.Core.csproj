@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Myizam.Core</RootNamespace>
+    <!-- Домен: НОЛЬ внешних зависимостей (ТЗ v2.0 §3) -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Myizam.Ingestion.Tests" />
+  </ItemGroup>
+
+</Project>

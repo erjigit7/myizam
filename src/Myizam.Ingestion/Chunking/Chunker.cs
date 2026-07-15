@@ -28,7 +28,8 @@ public static class Chunker
         if (!string.IsNullOrWhiteSpace(law.Preamble))
             AddChunks(chunks, meta, articleNumber: null,
                 header: $"{meta.LawTitle}. Преамбула",
-                paragraphs: law.Preamble.Split('\n'));
+                paragraphs: law.Preamble.Split('\n'),
+                articleTitle: "Преамбула", chapter: null, section: null);
 
         foreach (var a in law.Articles)
         {
@@ -38,13 +39,15 @@ public static class Chunker
             header.Append(". Статья ").Append(a.Number);
             if (a.Title is not null) header.Append(". ").Append(a.Title);
 
-            AddChunks(chunks, meta, a.Number, header.ToString(), a.Paragraphs);
+            AddChunks(chunks, meta, a.Number, header.ToString(), a.Paragraphs,
+                a.Title, a.ChapterHeading, a.SectionHeading);
         }
         return chunks;
     }
 
     private static void AddChunks(List<Chunk> chunks, LawMeta meta, string? articleNumber,
-        string header, IReadOnlyList<string> paragraphs)
+        string header, IReadOnlyList<string> paragraphs,
+        string? articleTitle, string? chapter, string? section)
     {
         var parts = SplitByParagraphs(paragraphs, MaxChunkChars);
         for (var i = 0; i < parts.Count; i++)
@@ -55,7 +58,8 @@ public static class Chunker
                 meta.DocumentCode, meta.LawTitle, meta.Status, meta.StatusCode,
                 meta.EditionDate, meta.EditionId, meta.Lang,
                 articleNumber, i + 1, parts.Count, partHeader, text,
-                Sha256Hex(partHeader + "\n" + text)));
+                Sha256Hex(partHeader + "\n" + text),
+                articleTitle, chapter, section));
         }
     }
 

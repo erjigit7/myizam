@@ -51,6 +51,7 @@ public static class EmbedCommand
                 EditionDate = DateOnly.Parse(first.EditionDate),
                 EditionId = first.EditionId,
                 ArticleCount = rows.Where(r => r.ArticleNumber is not null).Select(r => r.ArticleNumber).Distinct().Count(),
+                SourceUrl = $"https://cbd.minjust.gov.kg/{first.LawCode}/edition/{first.EditionId}/{first.Lang}",
                 IngestedAt = DateTimeOffset.UtcNow,
             };
             var entities = rows.Select(r => new ChunkEntity
@@ -63,6 +64,9 @@ public static class EmbedCommand
                 Text = r.Text,
                 ContentHash = r.ContentHash,
                 Lang = r.Lang,
+                ArticleTitle = r.ArticleTitle,
+                Chapter = r.Chapter,
+                Section = r.Section,
                 CreatedAt = DateTimeOffset.UtcNow,
             }).ToList();
 
