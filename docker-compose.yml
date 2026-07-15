@@ -1,0 +1,21 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-myizam}
+      POSTGRES_USER: ${POSTGRES_USER:-myizam}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-myizam}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-myizam}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # ml: фаза 2 ТЗ v2.1 — FastAPI sidecar (rerank + guard); добавится сервисом сюда
+
+volumes:
+  db_data:

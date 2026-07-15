@@ -13,4 +13,8 @@
     <PackageReference Include="AngleSharp" Version="1.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Myizam.Data\Myizam.Data.csproj" />
+  </ItemGroup>
+
 </Project>

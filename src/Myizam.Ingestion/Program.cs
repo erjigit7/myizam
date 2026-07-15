@@ -2,13 +2,14 @@ using System.Text.Json;
 using Myizam.Ingestion;
 using Myizam.Ingestion.Pipeline;
 
-// CLI: myizam-ingest [ingest] [documentCode...] [--dry-run] [--from-cache] [--lang ru|kg]
+// CLI: myizam-ingest [ingest|embed] [documentCode...] [--dry-run] [--from-cache] [--lang ru|kg]
 // ingest без кодов = прогнать весь config/laws.json (ТЗ §4.6)
+// embed — data/chunks/*.jsonl → Postgres + векторизация (ТЗ v2.1 §1.2)
 
 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 var codes = new List<string>();
-bool dryRun = false, fromCache = false;
+bool dryRun = false, fromCache = false, embedMode = false;
 var lang = "ru";
 
 for (var i = 0; i < args.Length; i++)
@@ -16,6 +17,7 @@ for (var i = 0; i < args.Length; i++)
     switch (args[i])
     {
         case "ingest": break;
+        case "embed": embedMode = true; break;
         case "--dry-run": dryRun = true; break;
         case "--from-cache": fromCache = true; break;
         case "--lang":
@@ -24,6 +26,7 @@ for (var i = 0; i < args.Length; i++)
             break;
         case "--help" or "-h":
             Console.WriteLine("Использование: ingest [documentCode...] [--dry-run] [--from-cache] [--lang ru|kg]");
+            Console.WriteLine("               embed [--lang ru|kg]   (env: DATABASE_URL, EMBEDDING_PROVIDER=ollama|openai, EMBEDDING_MODEL, EMBEDDING_DIM)");
             return 0;
         default:
             if (args[i].StartsWith('-')) { Console.Error.WriteLine($"Неизвестный флаг {args[i]}"); return 2; }
@@ -38,6 +41,9 @@ if (repoRoot is null)
     Console.Error.WriteLine("Не найден config/laws.json — запускать из корня репозитория myizam");
     return 2;
 }
+
+if (embedMode)
+    return await EmbedCommand.RunAsync(repoRoot, lang);
 
 var configPath = Path.Combine(repoRoot, "config", "laws.json");
 var allLaws = JsonSerializer.Deserialize<List<LawConfigEntry>>(

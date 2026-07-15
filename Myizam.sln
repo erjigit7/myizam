@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{232638FF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Myizam.Ingestion.Tests", "tests\Myizam.Ingestion.Tests\Myizam.Ingestion.Tests.csproj", "{317A3103-82C2-4754-9A17-491C29A60831}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Myizam.Data", "src\Myizam.Data\Myizam.Data.csproj", "{1BC1DB72-DA3A-4DFE-B059-0A40F4B96576}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,9 +30,14 @@ Global
 		{317A3103-82C2-4754-9A17-491C29A60831}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{317A3103-82C2-4754-9A17-491C29A60831}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{317A3103-82C2-4754-9A17-491C29A60831}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BC1DB72-DA3A-4DFE-B059-0A40F4B96576}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BC1DB72-DA3A-4DFE-B059-0A40F4B96576}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BC1DB72-DA3A-4DFE-B059-0A40F4B96576}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BC1DB72-DA3A-4DFE-B059-0A40F4B96576}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5664615B-A67A-4BF5-9C70-EA39455A937A} = {9C56AFB1-8251-430A-AABC-B4B75B06FEBC}
 		{317A3103-82C2-4754-9A17-491C29A60831} = {232638FF-837C-4747-BFF1-10395056FB98}
+		{1BC1DB72-DA3A-4DFE-B059-0A40F4B96576} = {9C56AFB1-8251-430A-AABC-B4B75B06FEBC}
 	EndGlobalSection
 EndGlobal

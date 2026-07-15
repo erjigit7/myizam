@@ -14,6 +14,11 @@ Legal RAG assistant for Kyrgyzstan with built-in hallucination detection (.NET +
 dotnet test                                          # юнит-тесты парсера (fixtures из реального HTML)
 dotnet run --project src/Myizam.Ingestion -- ingest --dry-run   # обязательный просмотр перед боевым прогоном
 dotnet run --project src/Myizam.Ingestion -- ingest             # боевой прогон: data/chunks/*.jsonl
+
+# Фаза 1 — БД + эмбеддинги (нужен Docker и Ollama с bge-m3, либо OPENAI_API_KEY):
+cp .env.example .env
+docker compose up -d db
+dotnet run --project src/Myizam.Ingestion -- embed   # jsonl → Postgres → векторы (идемпотентно)
 ```
 
 Флаги: `--dry-run` (дерево + 3 случайные статьи, без записи чанков), `--from-cache` (парсить из data/raw без запросов к API), `--lang ru|kg` (kg — фаза 2, не проверено), список кодов (`ingest 3-45 3-38`).
