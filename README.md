@@ -1,5 +1,7 @@
 # Мыйзам (Myizam)
 
+[![CI](https://github.com/erjigit7/myizam/actions/workflows/ci.yml/badge.svg)](https://github.com/erjigit7/myizam/actions/workflows/ci.yml)
+
 **A legal RAG assistant for Kyrgyzstan with a built-in hallucination detector.** Ask about your rights in Kyrgyz, Russian, or English — get a plain-language answer with references to specific articles of specific codes of the Kyrgyz Republic, automatically checked for groundedness before it reaches you.
 
 > 📸 _Screenshots (chat with a Kyrgyz question, sources panel, /laws) — coming with the public demo._
