@@ -223,44 +223,44 @@
   "id": "gs-021",
   "lang": "ky",
   "trap": false,
-  "top_similarity": 0.5582980471469506,
+  "top_similarity": 0.7082486090283009,
   "hit20": true,
   "hit5": true,
   "reranker_used": true,
-  "refused": true,
-  "cited_expected": false
+  "refused": false,
+  "cited_expected": true
  },
  {
   "id": "gs-022",
   "lang": "ky",
   "trap": false,
-  "top_similarity": 0.5367022301605218,
-  "hit20": false,
-  "hit5": false,
+  "top_similarity": 0.6826870355497116,
+  "hit20": true,
+  "hit5": true,
   "reranker_used": true,
-  "refused": true,
-  "cited_expected": false
+  "refused": false,
+  "cited_expected": true
  },
  {
   "id": "gs-023",
   "lang": "ky",
   "trap": false,
-  "top_similarity": 0.6017926097984688,
-  "hit20": false,
-  "hit5": false,
+  "top_similarity": 0.6664145788158417,
+  "hit20": true,
+  "hit5": true,
   "reranker_used": true,
   "refused": false,
-  "cited_expected": false
+  "cited_expected": true
  },
  {
   "id": "gs-024",
   "lang": "ky",
   "trap": false,
-  "top_similarity": 0.41444510221481323,
+  "top_similarity": 0.743792926484336,
   "hit20": false,
   "hit5": false,
   "reranker_used": true,
-  "refused": true,
+  "refused": false,
   "cited_expected": false
  },
  {

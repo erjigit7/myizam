@@ -28,15 +28,15 @@ The pipeline (10 steps): language detection → translation bridge to Russian �
 
 | Metric | Gate | Result |
 |---|---|---|
-| Retrieval hit@5 (after rerank) | ≥ 80% | **89%** |
+| Retrieval hit@5 (after rerank) | ≥ 80% | **96%** |
 | — Russian / English | | **100% / 100%** |
-| — Kyrgyz | | 40%¹ |
-| hit@20 (before rerank) | measured | 89%² |
-| Citation accuracy | ≥ 75% | 78% |
+| — Kyrgyz | | **80%**¹ |
+| hit@20 (before rerank) | measured | 96%² |
+| Citation accuracy | ≥ 75% | **89%** |
 | Trap refusal (out-of-corpus questions) | 3/3 | **3/3** |
 | Guard sanity (digit corruption) | corrupted ≪ honest | Δ +0.99 |
 
-¹ The bottleneck is the dev-LLM translation bridge (local qwen2.5-7B), not retrieval — Russian phrasings of the same questions hit 100%. To be re-run with the production model.
+¹ Kyrgyz jumped from 40% to 80% after replacing the generic dev-LLM bridge with **our own fine-tuned translator**: KazLLM-8B (QLoRA) trained on a parallel legal corpus extracted from the official bilingual code texts themselves — 15.8k aligned ru↔ky pairs, both directions. Known limitation (caught live, documented): spelled-out fractions can distort in translation («одна четверть» → «төрттөн үчү») — exactly the guard detector's blind spot, which defines the next retraining round for both models.
 ² bge-m3 already ranks the right article at/near the top on this corpus, so the reranker's gain shows in ordering inside top-5 rather than hit-rate — reported honestly instead of borrowing the 76→88% story from a different corpus.
 
 An interesting calibration finding: **no hard similarity threshold separates traps from honest questions** (max trap 0.597 vs min honest 0.604). Traps are caught by the combination of a 0.5 threshold + detecting the model's own "no answer in the provided articles" response. Full report: [docs/eval_report.md](docs/eval_report.md).
