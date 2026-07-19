@@ -20,6 +20,7 @@ for (var i = 0; i < args.Length; i++)
     {
         case "ingest": break;
         case "embed": embedMode = true; break;
+        case "check-updates": return await CheckUpdatesCommand.RunAsync();
         case "search":
             if (i + 1 >= args.Length) { Console.Error.WriteLine("search требует вопрос в кавычках"); return 2; }
             searchQuery = args[++i];

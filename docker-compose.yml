@@ -21,7 +21,7 @@ services:
       - "8000:8000"
     environment:
       GUARD_MODELS: ${GUARD_MODELS:-kg}
-      GUARD_MODEL_PATH_KG: /models/ragguard-kyrgyz-v1
+      GUARD_MODEL_PATH_KG: /models/${GUARD_KG_MODEL:-ragguard-kyrgyz-v2-legal}
       GUARD_MODEL_PATH_EN: /models/ragguard-v1
     volumes:
       - hf_cache:/hf-cache
